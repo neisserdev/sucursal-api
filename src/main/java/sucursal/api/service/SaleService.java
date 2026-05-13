@@ -3,6 +3,8 @@ package sucursal.api.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ public class SaleService {
         private final ProductRepository productRepository;
         private final SaleMapper saleMapper;
 
+        @CacheEvict(value = "sale_list", allEntries = true)
         @Transactional
         public SaleResponseDTO createSale(SaleRequestDTO dto) {
                 Branch branch = branchRepository.findById(dto.branchId())
@@ -59,6 +62,7 @@ public class SaleService {
                 return saleMapper.toResponse(saleRepository.save(sale));
         }
 
+        @Cacheable(value = "sale_list", key = "#branchID + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
         @Transactional(readOnly = true)
         public PageDTO<SaleResponseDTO> getAllSalesForBranch(Long branchID, Pageable pageable) {
                 branchRepository.findById(branchID)

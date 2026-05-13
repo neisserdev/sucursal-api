@@ -49,5 +49,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleGeneric(Exception exception, HttpServletRequest request){
         return ProblemDetailFactory.from(ErrorCode.INTERNAL_ERROR, "Ha ocurrido un error interno", request.getRequestURI());
     }
-
 }

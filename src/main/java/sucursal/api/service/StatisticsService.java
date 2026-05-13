@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import sucursal.api.exceptions.ResourceNotFoundException;
@@ -22,6 +23,7 @@ public class StatisticsService {
         private final SaleRepository saleRepository;
         private final BranchRepository branchRepository;
 
+        @Cacheable(value = "statistics_best_selling")
         public Optional<Product> getBestSellingProduct() {
                 return saleRepository.findAll().stream()
                                 .flatMap(sale -> sale.getItems().stream())
@@ -33,6 +35,7 @@ public class StatisticsService {
                                 .map(Map.Entry::getKey);
         }
 
+        @Cacheable(value = "statistics_revenue", key = "#branchId")
         public BigDecimal getRevenueForBranch(Long branchId) {
                 if (!branchRepository.existsById(branchId)) {
                         throw new ResourceNotFoundException("Branch not found with id: " + branchId);

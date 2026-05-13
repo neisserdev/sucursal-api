@@ -2,7 +2,6 @@ package sucursal.api.controller;
 
 import java.math.BigDecimal;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,6 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
     private final ProductMapper productMapper;
 
-    @Cacheable(value = "statistics_best_selling")
     @GetMapping("/best-selling-product")
     public ResponseEntity<ProductResponseDTO> bestSellingProduct() {
 
@@ -30,7 +28,6 @@ public class StatisticsController {
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @Cacheable(value = "statistics_revenue", key = "#id")
     @GetMapping("/branches/{id}/revenue")
     public ResponseEntity<BigDecimal> revenueByBranch(@PathVariable Long id) {
         return ResponseEntity.ok(statisticsService.getRevenueForBranch(id));

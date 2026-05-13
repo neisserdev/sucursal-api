@@ -4,7 +4,7 @@ API REST desarrollada con **Spring Boot 4** (v4.0.6) para gestionar sucursales, 
 
 ## 🛠️ Tecnologías
 
-- **Java 17** + **Spring Boot 4**
+- **Java 25** + **Spring Boot 4**
 - **Spring Data JPA** - Persistencia de datos
 - **PostgreSQL 12+** - Base de datos
 - **Spring Validation** - Validación de requests
